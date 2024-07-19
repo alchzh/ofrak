@@ -1,6 +1,6 @@
 import os
-import platform
 import stat
+import sys
 from ofrak import tempfile
 from dataclasses import dataclass
 from typing import Dict, Iterable, Optional, Type, Union
@@ -135,7 +135,7 @@ class FilesystemEntry(ResourceView):
         :param path: Path on disk to set attributes of.
         """
         if self.stat:
-            if platform.system != "Windows":
+            if sys.platform != "win32":
                 os.chown(path, self.stat.st_uid, self.stat.st_gid)
                 os.chmod(path, self.stat.st_mode)
             os.utime(path, (self.stat.st_atime, self.stat.st_mtime))
@@ -176,7 +176,7 @@ class FilesystemEntry(ResourceView):
             assert len(list(await self.resource.get_children())) == 0
             if self.stat:
                 # https://docs.python.org/3/library/os.html#os.supports_follow_symlinks
-                if platform.system != "Windows":
+                if sys.platform != "Windows":
                     if os.chown in os.supports_follow_symlinks:
                         os.chown(
                             link_name, self.stat.st_uid, self.stat.st_gid, follow_symlinks=False
