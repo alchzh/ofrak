@@ -1,4 +1,5 @@
 import os
+import platform
 import stat
 from ofrak import tempfile
 from dataclasses import dataclass
@@ -134,9 +135,9 @@ class FilesystemEntry(ResourceView):
         :param path: Path on disk to set attributes of.
         """
         if self.stat:
-            if hasattr(os, "chown"):
+            if platform.system != "Windows":
                 os.chown(path, self.stat.st_uid, self.stat.st_gid)
-            os.chmod(path, self.stat.st_mode)
+                os.chmod(path, self.stat.st_mode)
             os.utime(path, (self.stat.st_atime, self.stat.st_mtime))
         if self.xattrs:
             for attr, value in self.xattrs.items():
@@ -175,10 +176,13 @@ class FilesystemEntry(ResourceView):
             assert len(list(await self.resource.get_children())) == 0
             if self.stat:
                 # https://docs.python.org/3/library/os.html#os.supports_follow_symlinks
-                if hasattr(os, "chown") and os.chown in os.supports_follow_symlinks:
-                    os.chown(link_name, self.stat.st_uid, self.stat.st_gid, follow_symlinks=False)
-                if os.chmod in os.supports_follow_symlinks:
-                    os.chmod(link_name, self.stat.st_mode, follow_symlinks=False)
+                if platform.system != "Windows":
+                    if os.chown in os.supports_follow_symlinks:
+                        os.chown(
+                            link_name, self.stat.st_uid, self.stat.st_gid, follow_symlinks=False
+                        )
+                    if os.chmod in os.supports_follow_symlinks:
+                        os.chmod(link_name, self.stat.st_mode, follow_symlinks=False)
                 if os.utime in os.supports_follow_symlinks:
                     os.utime(
                         link_name,
