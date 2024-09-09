@@ -118,13 +118,9 @@ public class GetInstructions extends HeadlessScript {
             Register vle_register = instruction.getRegister("vle");
             if (vle_register != null) {
                 BigInteger vle_val = instruction.getValue(vle_register, false);
-<<<<<<< HEAD
-                this.instruction_mode = vle_val.equals(BigInteger.ONE) ? "VLE" : this.instruction_mode ;
-=======
                 if (vle_val != null && vle_val.equals(BigInteger.ONE)){
                     this.instruction_mode = "VLE";
                 }
->>>>>>> 1761415 (Update disassemblers/ofrak_ghidra/ofrak_ghidra/ghidra_scripts/GetInstructions.java)
             }
 
             for (int i = 0; i < instruction.getNumOperands(); i++) {
@@ -167,8 +163,17 @@ public class GetInstructions extends HeadlessScript {
         }
 
         String toJson() {
-            return String.format("{\"instr_offset\":%d,\"instr_size\":%d,\"mnem\":\"%s\",\"operands\":\"%s\",\"regs_read\":\"%s\",\"regs_written\":\"%s\",\"results\":\"%s\",\"instr_mode\":\"%s\"}",
-            instr_offset, instr_size, mnem, operands, registers_read, registers_written, results, instruction_mode);
+            return String.format(
+                "{\"instr_offset\":%s,\"instr_size\":%s,\"mnem\":\"%s\",\"operands\":\"%s\",\"regs_read\":\"%s\",\"regs_written\":\"%s\",\"results\":\"%s\",\"instr_mode\":\"%s\"}",
+                Long.toUnsignedString(instr_offset), 
+                Long.toUnsignedString(instr_size), 
+                mnem, 
+                operands, 
+                registers_read, 
+                registers_written, 
+                results, 
+                instruction_mode
+            );
         }
     }
 }
