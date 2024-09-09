@@ -118,7 +118,13 @@ public class GetInstructions extends HeadlessScript {
             Register vle_register = instruction.getRegister("vle");
             if (vle_register != null) {
                 BigInteger vle_val = instruction.getValue(vle_register, false);
+<<<<<<< HEAD
                 this.instruction_mode = vle_val.equals(BigInteger.ONE) ? "VLE" : this.instruction_mode ;
+=======
+                if (vle_val != null && vle_val.equals(BigInteger.ONE)){
+                    this.instruction_mode = "VLE";
+                }
+>>>>>>> 1761415 (Update disassemblers/ofrak_ghidra/ofrak_ghidra/ghidra_scripts/GetInstructions.java)
             }
 
             for (int i = 0; i < instruction.getNumOperands(); i++) {
