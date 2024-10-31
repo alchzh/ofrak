@@ -99,6 +99,7 @@ class GNU_PPCVLE_4_Toolchain(Abstract_GNU_Toolchain):
             self._compiler_flags.append("-mhard-float")
         else:
             self._compiler_flags.append("-msoft-float")
+        self._compiler_flags.append("-std=gnu11")
         self._assembler_flags.append("-mvle")
 
     @property  # pragma: no cover
