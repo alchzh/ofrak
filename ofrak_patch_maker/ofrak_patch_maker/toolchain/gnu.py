@@ -1,6 +1,6 @@
 import logging
 import os
-from ofrak import tempfile
+import tempfile
 from abc import ABC, abstractmethod
 from typing import Iterable, List, Mapping, Optional, Tuple, Dict
 from warnings import warn
@@ -46,7 +46,6 @@ class Abstract_GNU_Toolchain(Toolchain, ABC):
                 #      if sections contain more than one function =/
                 "-fno-merge-constants",  # avoids sections like .rodata.cst16, .rodata.str1.1 etc
                 "-fno-reorder-functions",
-                "-Wall",
             ]
         )
         if self._config.separate_data_sections:

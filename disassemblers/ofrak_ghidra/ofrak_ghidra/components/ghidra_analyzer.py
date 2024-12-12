@@ -2,7 +2,7 @@ import asyncio
 import hashlib
 import logging
 import os
-from ofrak import tempfile
+import tempfile
 import time
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
