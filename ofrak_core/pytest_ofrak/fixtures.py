@@ -1,5 +1,4 @@
 import logging
-import os
 
 import pytest
 
@@ -21,7 +20,7 @@ def ofrak_id_service():
 
 @pytest.fixture
 def ofrak(ofrak_injector, ofrak_id_service):
-    ofrak = OFRAK(logging.INFO)
+    ofrak = OFRAK(logging.INFO, exclude_components_missing_dependencies=True)
     ofrak.injector = ofrak_injector
     ofrak.set_id_service(ofrak_id_service)
 
@@ -33,9 +32,3 @@ async def ofrak_context(ofrak):
     context = await ofrak.create_ofrak_context()
     yield context
     await context.shutdown_context()
-
-
-@pytest.fixture
-def skipif_windows():
-    if os.name == "nt":
-        pytest.skip("Test cannot run on Windows.")
